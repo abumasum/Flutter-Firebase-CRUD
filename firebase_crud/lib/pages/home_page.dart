@@ -131,7 +131,7 @@ class _HomeState extends State<Home> {
             String todoId = _todoList[index].key;
             String subject = _todoList[index].subject;
             bool completed = _todoList[index].completed;
-            String userId = _todoList[index].userId;
+            //String userId = _todoList[index].userId;
             return Dismissible(
               key: Key(todoId),
               background: Container(color: Colors.red),
