@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_crud/pages/home.dart';
+import 'package:firebase_crud/pages/home_page.dart';
 import 'package:firebase_crud/pages/login.dart';
 import 'package:firebase_crud/pages/splash.dart';
 import 'package:flutter/material.dart';

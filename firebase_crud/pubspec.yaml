@@ -31,6 +31,7 @@ dependencies:
   firebase_core: "^0.5.0+1"
   firebase_auth: "^0.18.1+2"
   flutter_spinkit: "^4.1.2"
+  firebase_database: ^4.3.0
 
 dev_dependencies:
   flutter_test:
