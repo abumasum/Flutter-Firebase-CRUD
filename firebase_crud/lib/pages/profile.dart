@@ -11,8 +11,10 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   String name = " ";
+  String key;
   int count = 0;
   final db = FirebaseDatabase.instance.reference();
+  final _textEditingController = TextEditingController();
   StreamSubscription<Event> _onTodoAddedSubscription;
   StreamSubscription<Event> _onCountSubscription;
   Query nameQuery, countQuery;
@@ -33,6 +35,7 @@ class _ProfileState extends State<Profile> {
     super.dispose();
   }
   readName(Event event){
+      key = event.snapshot.key;
       setState(() {
         name = event.snapshot.value["name"];       
       });     
@@ -42,6 +45,48 @@ class _ProfileState extends State<Profile> {
     setState(() {
       Map data = event.snapshot.value;
       count = data.length;
+    });
+  }
+  showEditDialog(BuildContext context) async {
+    _textEditingController.clear();
+    await showDialog<String>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: new Row(
+              children: <Widget>[
+                new Expanded(
+                    child: new TextField(
+                  controller: _textEditingController,
+                  autofocus: true,
+                  decoration: new InputDecoration(
+                    labelText: 'Update your name',
+                    hintText: name
+                  ),
+                ))
+              ],
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                  child: const Text('Cancel'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
+              new FlatButton(
+                  child: const Text('Update'),
+                  onPressed: () async{
+                    await updateName(key, _textEditingController.text);
+                    Navigator.pop(context);
+                  })
+            ],
+          );
+        });
+  }
+
+  updateName(String key, String newName){
+    db.child('users').child(key).child('name').set(newName);
+    setState(() {
+      name = newName;
     });
   }
 
@@ -87,7 +132,7 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 IconButton(icon: Icon(Icons.edit), onPressed: (){
-
+                  showEditDialog(context);
                 })
               ],
             ),
